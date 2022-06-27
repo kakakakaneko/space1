@@ -64,11 +64,11 @@ def func(t,a,b):
 popt, pcov = curve_fit(func,phase,v,p0=[0.70,0])
 x_fit = np.linspace(0,1,100)
 y_fit = func(x_fit,*popt)
-vr = popt[0]*1000
+vr = popt[0]
 plt.plot(x_fit,y_fit,label="fit",zorder=2,linewidth=3)
 plt.legend()
 plt.show()
-print("A = ",popt[0]*1000,"(m/s)")
+print("A = ",vr,"(m/s)")
 
 def function(e):
     return (1+e)**2-2*pi*M_sun*G*(e**3)/(estimated_timescale*24*60*60*(vr**3))
