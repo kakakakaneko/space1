@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from astropy import constants as const
 from astropy.timeseries import LombScargle
+from scipy.optimize import curve_fit
 
 #####################-------constants-----------###################
 
@@ -42,18 +43,30 @@ plt.xlabel("Frequency")
 plt.ylabel("Velocity")
 plt.show()
 estimated_timescale = 1/frequency[np.argmax(velocity)]
-print(estimated_timescale)
+print("Time_scale = ", estimated_timescale)
 
 
 
 phase = (t/estimated_timescale)%1
-plt.errorbar(phase,v,yerr=error,marker="o",capthick=1, capsize=10,lw = 1, linestyle="None")
+plt.errorbar(phase,v,yerr=error,marker="o",capthick=1, capsize=10,lw = 1, linestyle="None", label="data",zorder=1)
 plt.xlabel("phase")
 plt.ylabel("velocity")
+#plt.show()
+
+def func(t,a,b):
+    return a*np.sin(2*pi*t+b)
+
+popt, pcov = curve_fit(func,phase,v,p0=[0.70,0])
+x_fit = np.linspace(0,1,100)
+y_fit = func(x_fit,*popt)
+plt.plot(x_fit,y_fit,label="fit",zorder=2,linewidth=3)
+plt.legend()
 plt.show()
+print("A = ",popt[0])
+
 ###--------------------------------------------------
 
-
+# task4: max(min) is the A(振幅)
 # task5:solve by using kepler's law
 # 656.1122764193188 nm
 # 486.00909364393993 nm
