@@ -66,16 +66,21 @@ vr = popt[0]*1000
 plt.plot(x_fit,y_fit,label="fit",zorder=2,linewidth=3)
 plt.legend()
 plt.show()
-print("A = ",popt[0]*1000,"m/s")
+print("A = ",popt[0]*1000,"(m/s)")
 
 def function(e):
     return (1+e)**2-2*pi*M_sun*G*(e**3)/(estimated_timescale*24*60*60*(vr**3))
 
 eps = opt.newton(function,0.6)
+D = M_sun*G*(eps**2)/((vr**2)*(1+eps))/au
 print("eps = ",eps)
-print("D = ",M_sun*G*(eps**2)/((vr**2)*(1+eps))/au,"au")
-print("M_acc/M_jup = ",eps*M_sun/M_jup)
+print("D = ",M_sun*G*(eps**2)/((vr**2)*(1+eps))/au,"(au)")
+print("M_PG51b/M_jup = ",eps*M_sun/M_jup)
 print("M_jup/M_sun = ",M_jup/M_sun)
+
+E_in = (L_sun/(4*pi*(D*au)**2))*pi
+T_eq = (E_in/(sigma*4*pi))**(1/4)
+print("T_eq = ",T_eq,"(K)")
 
 ###--------------------------------------------------
 
