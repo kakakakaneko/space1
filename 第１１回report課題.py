@@ -28,6 +28,8 @@ data = pd.read_csv('51peg.dat', header=None,delim_whitespace=True)
 t = list(data[0])
 v = list(data[1])
 error = list(data[2])
+for i in range(len(error)):
+    error[i] = error[i] * 1000
 vg = 0
 
 for vs in v:
@@ -38,7 +40,7 @@ vg = vg/(len(v))
 print("Vg = ", vg)
 
 for i in range(len(v)):
-    v[i] = v[i]-vg
+    v[i] = (v[i]-vg)*1000
 
 frequency, velocity = LombScargle(t, v).autopower(nyquist_factor=20)
 plt.plot(frequency,velocity)
@@ -53,7 +55,7 @@ print("Time_scale = ", estimated_timescale)
 phase = (t/estimated_timescale)%1
 plt.errorbar(phase,v,yerr=error,marker="o",capthick=1, capsize=10,lw = 1, linestyle="None", label="data",zorder=1)
 plt.xlabel("Phase")
-plt.ylabel("Velocity(km/s)")
+plt.ylabel("Velocity(m/s)")
 #plt.show()
 
 def func(t,a,b):
