@@ -68,11 +68,6 @@ for i in range(len(t_fit)):
     x_fit.append(r_fit[i]*np.cos(-t_fit[i]))
     y_fit.append(r_fit[i]*np.sin(-t_fit[i]))
 
-semimajor = 0
-for i in range(len(x_fit)):
-    for j in range(len(x_fit)):
-        dist = np.sqrt((x_fit[i]-x_fit[j])**2+(y_fit[i]-y_fit[j])**2)
-        semimajor = max(semimajor,dist)
         
 semimajor = (func(2*pi-popt[1],*popt)+func(pi-popt[1],*popt))/2
 print("epsilon = ",popt[2])
@@ -88,10 +83,12 @@ index  = [0,0]
 index[0] = np.argmax(r)
 index[1] = np.argmin(r)
 
-plt.plot(t_fit,r_fit)
-plt.scatter(theta,r)
+plt.plot(t_fit,r_fit,label="Curve fit")
+plt.scatter(theta,r,label="Raw data")
 plt.xlabel("φ")
 plt.ylabel("r(arcsec)")
+plt.legend()
+plt.show()
 
 time_scale = abs(t[index[0]]-t[index[1]+1])*2
 print("time_scale = ",time_scale,"year")
@@ -101,7 +98,7 @@ print("M_sgrA = ",M_sgrA,"M_sun")
 
 R_g = 2*G*M_sgrA*M_sun/(c**2)
 print("R_g = ",R_g/au,"au")
-r_near = 8.5e3*pc*np.tan(func(pi-popt[1],*popt)/3600/180*pi)
+r_near = 8.5e3*pc*np.tan(func(2*pi-popt[1],*popt)/3600/180*pi)
 print("r_near/R_g = ",r_near/R_g)
 ###--------------------------------------------------
 
