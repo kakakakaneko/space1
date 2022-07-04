@@ -40,10 +40,12 @@ theta = []
 
 for i in range(len(t)):
     r.append(np.sqrt(x[i]**2+y[i]**2))
-    if y[i]<=0:
+    if (y[i]<=0)&(i<=15):
         theta.append(np.arccos(x[i]/r[i]))
-    else:
+    elif (y[i]>=0)&(i<=15):
         theta.append(2*pi-np.arccos(x[i]/r[i]))
+    else:
+        theta.append(2*pi+np.arccos(x[i]/r[i]))
     
 
 
@@ -72,7 +74,7 @@ for i in range(len(x_fit)):
         dist = np.sqrt((x_fit[i]-x_fit[j])**2+(y_fit[i]-y_fit[j])**2)
         semimajor = max(semimajor,dist)
         
-semimajor = semimajor/2
+semimajor = (func(2*pi-popt[1],*popt)+func(pi-popt[1],*popt))/2
 print("epsilon = ",popt[2])
 print("semi-major axis(ac) = ",semimajor,"arcsec")
 plt.plot(x_fit,y_fit,label="Curve fit",zorder=2,linewidth=3)
@@ -97,8 +99,10 @@ print("time_scale = ",time_scale,"year")
 M_sgrA = ((2*pi)**2)*((a_real*au)**3)/G/(time_scale*365*24*3600)**2/M_sun
 print("M_sgrA = ",M_sgrA,"M_sun")
 
-R_g = 2*G*M_sgrA/(c**2)
-print("R_g = ",R_g,"au")
+R_g = 2*G*M_sgrA*M_sun/(c**2)
+print("R_g = ",R_g/au,"au")
+r_near = 8.5e3*pc*np.tan(func(pi-popt[1],*popt)/3600/180*pi)
+print("r_near/R_g = ",r_near/R_g)
 ###--------------------------------------------------
 
 # task4: max(min) is the A(振幅)
